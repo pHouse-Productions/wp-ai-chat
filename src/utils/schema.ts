@@ -13,8 +13,8 @@ export type ChatRequest = z.infer<typeof ChatRequestSchema>;
 
 export const ChatResponseSchema = z.object({
   id: z.string(),
-  response: z.string(),
-  references: z.array(z.string()),
+  response: z.string().nullable(),
+  references: z.array(z.string()).nullable(),
 });
 export type ChatResponse = z.infer<typeof ChatResponseSchema>;
 

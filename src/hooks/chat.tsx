@@ -67,7 +67,9 @@ export const useLocalStorage = <T,>(
 const ChatMessagesSchema = z.array(ChatMessageSchema);
 
 export const useChat = () => {
-  const [state, setState] = useState<"idle" | "awaiting_response">("idle");
+  const [state, setState] = useState<"idle" | "sending" | "awaiting_response">(
+    "idle"
+  );
   const [history, setHistory] = useLocalStorage(
     "history",
     ChatMessagesSchema,
@@ -122,23 +124,45 @@ ${m.message}
           .join("\n\n"),
       };
 
-      setState("awaiting_response");
+      setState("sending");
       const fetchResponse = await fetch("/api/prompt", {
         method: "POST",
         body: JSON.stringify(body),
       });
-      const response = ChatResponseSchema.parse(await fetchResponse.json());
-      setState("idle");
+      const id = (await fetchResponse.json()).id;
+      if (!id) {
+        setState("idle");
+        alert("Oops, something went wrong. Please try again later.");
+        return;
+      }
+      setState("awaiting_response");
 
-      setHistory(
-        a.concat({
-          id: response.id,
-          date: new Date(),
-          from: "Bot",
-          message: response.response,
-          references: response.references,
-        })
-      );
+      const check = async () => {
+        const aiResponse = await fetch("/api/prompt?id=" + id, {
+          method: "GET",
+        });
+        const response = ChatResponseSchema.parse(await aiResponse.json());
+        if (!response.response || !response.references) return false;
+        setHistory(
+          a.concat({
+            id: response.id,
+            date: new Date(),
+            from: "Bot",
+            message: response.response,
+            references: response.references,
+          })
+        );
+        return true;
+      };
+
+      return new Promise<void>((resolve) => {
+        const interval = setInterval(async () => {
+          if (!(await check())) return;
+          clearInterval(interval);
+          setState("idle");
+          resolve();
+        }, 1000);
+      });
     },
     [history, setHistory]
   );

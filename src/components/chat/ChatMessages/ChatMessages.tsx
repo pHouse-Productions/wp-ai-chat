@@ -9,7 +9,7 @@ export const ChatMessages: FC<ChatMessagesProps> = ({
   state,
   rateMessage,
 }) => {
-  const isWaiting = state === "awaiting_response";
+  const isWaiting = state !== "idle";
   return (
     <>
       {messages.map((m) => (
