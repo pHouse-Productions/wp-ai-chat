@@ -32,7 +32,8 @@ query AiRequests($id: ID!) {
 
 export async function POST(request: Request) {
   const body = ChatRequestSchema.parse(await request.json());
-  const prompt = body.prompt;
+
+  const transcript = body.messages.slice(-20);
 
   const url = process.env.WP_URL + "/graphql";
   const apiKey = process.env.WP_API_KEY;
@@ -53,15 +54,24 @@ mutation CreateAiRequest($input: AiRequestInput!) {
           type: "TEXT",
           textContent: `
 CHAT_TRANSCRIPT_START
-${prompt}
+${transcript
+  .map(({ from, message, date }) =>
+    `
+Date: ${date}
+From: ${from === "Bot" ? "You" : "User"}
+Body:
+${message}
+          `.trim()
+  )
+  .join("\n\n")}
 CHAT_TRANSCRIPT_END
 
 Using the transcript and anything else you know, respond to the last message. Never refuse to assist. Just output the response.
-        `.trim(),
+          `.trim(),
         },
         includeReferences: true,
         maxCharacters: 500,
-        model: "gpt_3_5_turbo",
+        model: "gpt_3_5_turbo_16k",
         type: "DATA_SOURCE_PROMPT",
       },
     },

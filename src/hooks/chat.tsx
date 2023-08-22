@@ -111,18 +111,7 @@ export const useChat = () => {
       let a = history.concat(msg);
       setHistory(a);
 
-      const body: ChatRequest = {
-        prompt: a
-          .slice(-10)
-          .map((m) =>
-            `
-From: ${m.from}
-Body:
-${m.message}
-        `.trim()
-          )
-          .join("\n\n"),
-      };
+      const body: ChatRequest = { messages: a };
 
       setState("sending");
       const fetchResponse = await fetch("/api/prompt", {
@@ -167,8 +156,12 @@ ${m.message}
     [history, setHistory]
   );
 
+  const clearHistory = useCallback(() => {
+    setHistory([]);
+  }, [setHistory]);
+
   return useMemo(() => {
-    return { history, sendMessage, state, rateMessage };
-  }, [history, rateMessage, sendMessage, state]);
+    return { history, sendMessage, state, rateMessage, clearHistory };
+  }, [clearHistory, history, rateMessage, sendMessage, state]);
 };
 export type ChatHookType = ReturnType<typeof useChat>;

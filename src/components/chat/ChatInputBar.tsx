@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faEraser, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   forwardRef,
@@ -12,14 +12,17 @@ import {
 
 export const ChatInputBar = ({
   onSend,
+  onClear,
 }: {
   onSend: (input: string) => void;
+  onClear: () => void;
 }) => {
   const [input, setInput] = useState("");
 
   return (
     <div className="flex items-end border rounded-sm px-3 py-2 gap-4">
       <Textarea
+        autoFocus
         className="flex-1"
         resize
         name="input"
@@ -45,6 +48,14 @@ export const ChatInputBar = ({
         onClick={() => {
           onSend(input);
           setInput("");
+        }}
+      />
+      <FontAwesomeIcon
+        icon={faEraser}
+        className="transition-opacity ease-in-out duration-200 cursor-pointer hover:opacity-100 opacity-50"
+        onClick={() => {
+          if (!confirm("Are you sure you want to clear the chat?")) return;
+          onClear();
         }}
       />
     </div>

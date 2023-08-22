@@ -42,6 +42,9 @@ export const Chat = () => {
           chat.sendMessage(input);
           setScrollToBottomRequested(true);
         }}
+        onClear={() => {
+          chat.clearHistory();
+        }}
       />
     </div>
   );

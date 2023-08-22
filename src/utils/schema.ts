@@ -6,18 +6,6 @@ export const RateRequestSchema = z.object({
 });
 export type RateRequest = z.infer<typeof RateRequestSchema>;
 
-export const ChatRequestSchema = z.object({
-  prompt: z.string().min(1),
-});
-export type ChatRequest = z.infer<typeof ChatRequestSchema>;
-
-export const ChatResponseSchema = z.object({
-  id: z.string(),
-  response: z.string().nullable(),
-  references: z.array(z.string()).nullable(),
-});
-export type ChatResponse = z.infer<typeof ChatResponseSchema>;
-
 export const ChatMessageSchema = z.object({
   id: z.string(),
   from: z.enum(["User", "Bot"]),
@@ -33,3 +21,15 @@ export const UserSchema = z.object({
   picUrl: z.string().url().optional(),
 });
 export type User = z.infer<typeof UserSchema>;
+
+export const ChatRequestSchema = z.object({
+  messages: z.array(ChatMessageSchema),
+});
+export type ChatRequest = z.infer<typeof ChatRequestSchema>;
+
+export const ChatResponseSchema = z.object({
+  id: z.string(),
+  response: z.string().nullable(),
+  references: z.array(z.string()).nullable(),
+});
+export type ChatResponse = z.infer<typeof ChatResponseSchema>;
