@@ -30,6 +30,6 @@ export type ChatMessage = z.infer<typeof ChatMessageSchema>;
 
 export const UserSchema = z.object({
   userId: z.string(),
-  picUrl: z.string().url(),
+  picUrl: z.string().url().optional(),
 });
 export type User = z.infer<typeof UserSchema>;

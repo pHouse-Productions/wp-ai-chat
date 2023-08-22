@@ -9,7 +9,7 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 
 export const ChatMessage: FC<{
   message: Message;
@@ -24,56 +24,10 @@ export const ChatMessage: FC<{
 
   const profilePicture = isFromBot ? botLogo : userInfo?.picUrl;
 
-  const botMessageStyles: React.CSSProperties = useMemo(() => {
-    if (!isFromBot) return {};
-    return {
-      backgroundColor: "var(--secondary-background)",
-      borderRadius: "0.375rem",
-    };
-  }, [isFromBot]);
-
-  const chatMessageContainerStyles: React.CSSProperties = useMemo(() => {
-    return {
-      display: "flex",
-      color: "var(--text-color)",
-      padding: "1.25rem",
-      gap: "1.25rem",
-      ...botMessageStyles,
-    };
-  }, [botMessageStyles]);
-
-  const imageStyles = useMemo(() => {
-    return {
-      width: "2.25rem",
-      height: "2.25rem",
-      borderRadius: "0.375rem",
-    };
-  }, []);
-
-  const defaultImageStyles = useMemo(() => {
-    return {
-      ...imageStyles,
-      backgroundColor: "var(--secondary-background)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "var(--primary-color)",
-    };
-  }, [imageStyles]);
-
-  const chatBodyStyles = useMemo(() => {
-    return {
-      fontSize: "0.875rem",
-      lineHeight: "1.25rem",
-      fontWeight: isFromBot ? 400 : 600,
-      color: "var(--text-color)",
-      whiteSpace: "pre-wrap" as React.CSSProperties["whiteSpace"],
-    };
-  }, [isFromBot]);
-
   return (
-    <div style={chatMessageContainerStyles}>
-      {/* Avatar */}
+    <div
+      className={cn("flex p-6 gap-4 round-sm", isFromBot ? "bg-gray-50" : "")}
+    >
       <div
         style={{
           flexShrink: 0,
@@ -81,10 +35,14 @@ export const ChatMessage: FC<{
       >
         {profilePicture ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img style={imageStyles} src={profilePicture} alt="Profile pic" />
+          <img
+            className="h-10 w-10 rounded-md"
+            src={profilePicture}
+            alt="Profile pic"
+          />
         ) : (
-          <div style={defaultImageStyles}>
-            <FontAwesomeIcon icon={faUser} />
+          <div className="h-10 w-10 rounded-md p-2 bg-gray-400">
+            <FontAwesomeIcon className="h-full w-full" icon={faUser} />
           </div>
         )}
       </div>
@@ -92,11 +50,15 @@ export const ChatMessage: FC<{
       {/* Message */}
       <div
         style={{
-          marginTop: "0.5rem",
           width: "100%",
         }}
       >
-        <div style={chatBodyStyles}>
+        <div
+          className={cn(
+            "text-sm leading-relaxed whitespace-pre-wrap",
+            isFromBot ? "font-medium" : ""
+          )}
+        >
           {message.message === "..." ? (
             <FontAwesomeIcon icon={faCircleNotch} spin />
           ) : (

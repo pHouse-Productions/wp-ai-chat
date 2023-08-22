@@ -11,10 +11,8 @@ import {
 } from "react";
 
 export const ChatInputBar = ({
-  chatInputRef,
   onSend,
 }: {
-  chatInputRef: React.MutableRefObject<HTMLTextAreaElement | undefined>;
   onSend: (input: string) => void;
 }) => {
   const [input, setInput] = useState("");
@@ -33,13 +31,6 @@ export const ChatInputBar = ({
         data-gramm="false"
         data-gramm_editor="false"
         data-enable-grammarly="false"
-        style={{
-          flex: 1,
-          border: "none",
-          resize: "none",
-          backgroundColor: "transparent",
-          outline: "none",
-        }}
         onKeyDown={(e) => {
           if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -99,7 +90,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       <textarea
         className={cn(
           "w-full",
-          resize ? `resize-none overflow-hidden` : "",
+          resize ? `resize-none overflow-hidden outline-none` : "",
           resize ? "" : className
         )}
         ref={innerRef}
