@@ -10,5 +10,5 @@ export default function Home() {
   useEffect(() => {
     setShow(true);
   }, []);
-  return <main className="h-screen">{show ? <Chat /> : null}</main>;
+  return show ? <Chat /> : null;
 }
