@@ -17,11 +17,11 @@ export const useUser = () => {
   return useMemo<User>(() => {
     try {
       return UserSchema.parse({
-        userId: searchParams.get("userId"),
-        picUrl: searchParams.get("picUrl"),
+        userId: searchParams.get("userId") || "unknown",
+        picUrl: searchParams.get("picUrl") || undefined,
       });
     } catch (e) {
-      return { userId: "unknown", picUrl: "https://i.imgur.com/LGHTjW1.jpeg" };
+      return { userId: "unknown" };
     }
   }, [searchParams]);
 };
