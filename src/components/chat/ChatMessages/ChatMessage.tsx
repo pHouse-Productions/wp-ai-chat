@@ -62,7 +62,18 @@ export const ChatMessage: FC<{
           {message.message === "..." ? (
             <FontAwesomeIcon icon={faCircleNotch} spin />
           ) : (
-            <div>{message.message}</div>
+            <>
+              <div>{message.message}</div>
+              {message.references?.length && (
+                <div className="flex flex-col gap-2 mt-6 text-xs text-gray-500">
+                  {message.references.map((url) => (
+                    <a target="_blank" href={url} key={url}>
+                      {url}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
