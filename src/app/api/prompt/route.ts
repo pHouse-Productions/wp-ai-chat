@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 
   const url = process.env.WP_URL + "/graphql";
   const apiKey = process.env.WP_API_KEY;
-  const accountId = process.env.WP_ACCOUNT_ID;
+  const accountId = await getAccountId();
   const data = {
     query: `
 mutation CreateAiRequest($input: AiRequestInput!) {
@@ -86,3 +86,31 @@ Using the transcript and anything else you know, respond to the last message. Ne
     id: z.string().parse(json.data.createAiRequestAsync.id),
   });
 }
+
+const getAccountId = async () => {
+  const url = process.env.WP_URL + "/graphql";
+  const apiKey = process.env.WP_API_KEY;
+  const data = {
+    query: `
+query apiKeys($apiKey: ID!) {
+  apiKeys(input: {apiKeys: [$apiKey]}) {
+    accountId
+  }
+}
+    `,
+    variables: { apiKey },
+  };
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": apiKey ?? "" },
+    body: JSON.stringify(data),
+  });
+  const json = await response.json();
+  return z
+    .array(
+      z.object({
+        accountId: z.string(),
+      })
+    )
+    .parse(json.data.apiKeys)[0].accountId;
+};
