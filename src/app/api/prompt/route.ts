@@ -71,7 +71,7 @@ Using the transcript and anything else you know, respond to the last message. Ne
         },
         includeReferences: true,
         maxCharacters: 500,
-        model: "gpt_3_5_turbo_16k",
+        model: "gpt_3_5_turbo",
         type: "DATA_SOURCE_PROMPT",
       },
     },
