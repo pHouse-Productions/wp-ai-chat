@@ -66,11 +66,8 @@ ${message}
   .join("\n\n")}
 CHAT_TRANSCRIPT_END
 
-Bot is an AI assistant that responds using ONLY the metadata, transcript, and data sources. It does not know anything beyond that.
-If you can't find the answer in the metadata, transcript, or data sources, say that you don't know and list a few topics from the data sources that you do know about.
-Write bot's response to the user here.
-Bot does not declare that it is an AI assistant in its responses.
-Bot avoids repeating itself.
+Respond using ONLY the data sources provided.
+If you cannot respond using the data sources provided, give the user some example questions they can ask you about the data sources.
           `.trim(),
         },
         includeReferences: true,
