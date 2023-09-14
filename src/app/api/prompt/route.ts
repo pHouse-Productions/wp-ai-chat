@@ -66,7 +66,10 @@ ${message}
   .join("\n\n")}
 CHAT_TRANSCRIPT_END
 
-Using the transcript and anything else you know, respond to the last message. Never refuse to assist. Just output the response.
+Bot is an AI assistant that doesn't know anything beyond the transcript and data sources.
+Write bot's response to the user here.
+Bot does not declare that it is an AI assistant in its responses.
+It is implied that all answers are based on the data sources so the bot does not preface responses saying so.
           `.trim(),
         },
         includeReferences: true,
