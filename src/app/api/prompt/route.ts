@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   const body = ChatRequestSchema.parse(await request.json());
 
   const transcript = body.messages
-    .slice(-20)
+    .slice(-10)
     .map((m) =>
       `
 From: ${m.from}
@@ -43,7 +43,7 @@ ${m.message}
 `.trim()
     )
     .join("\n\n");
-  const model = AiModel.Gpt_3_5Turbo_16k;
+  const model = AiModel.Gpt_3_5Turbo;
 
   const url = process.env.WP_URL + "/graphql";
   const apiKey = process.env.WP_API_KEY;
