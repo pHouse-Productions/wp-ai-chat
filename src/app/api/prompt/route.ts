@@ -37,9 +37,10 @@ export async function POST(request: Request) {
     .slice(-10)
     .map((m) =>
       `
-From: ${m.from}
-Body:
+FROM: ${m.from}
+BODY_START
 ${m.message}
+BODY_END
 `.trim()
     )
     .join("\n\n");
@@ -81,7 +82,7 @@ START_TRANSCRIPT
 ${transcript}
 END_TRANSCRIPT
 
-Rewrite the last message from "me" so it can be submitted as a stand-alone question or statement separate from the rest of the chat.
+Rewrite ONLY the last message from "User" so it can be submitted as a stand-alone question or statement separate from the rest of the chat.
 It will be submitted to somebody that doesn't know anything about the transcript and has no context.
 Carry over any information that is relevant to the question or statement so it can be understood without context.
 Your response should look something like:
@@ -98,6 +99,7 @@ or
   
 Respond to the user using ONLY the data sources provided.
 If you cannot respond or if there's no specific query, suggest some topics that are in the data sources.
+Respond in the style of an informal human, not a robot.
               `.trimEnd(),
             },
           ],
