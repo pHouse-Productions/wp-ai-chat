@@ -43,7 +43,7 @@ ${m.message}
 `.trim()
     )
     .join("\n\n");
-  const model = AiModel.Gpt_3_5Turbo;
+  const model = AiModel.Gpt_3_5Turbo_16k;
 
   const url = process.env.WP_URL + "/graphql";
   const apiKey = process.env.WP_API_KEY;
