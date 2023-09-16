@@ -99,7 +99,8 @@ or
   
 Respond to the user using ONLY the data sources provided.
 If you cannot respond or if there's no specific query, suggest some topics that are in the data sources.
-Respond in the style of an informal human, not a robot.
+Respond in the style of an informal human.
+You do not need to say hi.
               `.trimEnd(),
             },
           ],
